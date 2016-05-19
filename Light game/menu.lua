@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 -----------------------------------------------------------------------------------------
 --
 -- menu.lua
@@ -170,10 +169,23 @@ function scene:destroy( event )
 	-- INSERT code here to cleanup the scene
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
 	
-	if playBtn then
-		playBtn:removeSelf()	-- widgets must be manually removed
-		playBtn = nil
+	if level1 then
+		level1:removeSelf()	-- widgets must be manually removed
+		level1 = nil
 	end
+	if level2 then
+		level1:removeSelf()	-- widgets must be manually removed
+		level1 = nil
+	end
+	if level3 then
+		level1:removeSelf()	-- widgets must be manually removed
+		level1 = nil
+	end
+	if level4 then
+		level1:removeSelf()	-- widgets must be manually removed
+		level1 = nil
+	end
+	
 end
 
 ---------------------------------------------------------------------------------
@@ -187,6 +199,3 @@ scene:addEventListener( "destroy", scene )
 -----------------------------------------------------------------------------------------
 
 return scene
-=======
----------------------------------------------
->>>>>>> Stashed changes
