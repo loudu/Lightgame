@@ -35,7 +35,9 @@ end
 local function onReplayRelease()
 
     -- go to level4.lua scene
-    composer.gotoScene( "level4", "fade", 500 )
+    composer.removeScene("level4")
+    composer.loadScene("level4")
+
 
     return true	-- indicates successful touch
 end
@@ -43,10 +45,9 @@ end
 
 function scene:create( event )
 
-
+    local sceneGroup = self.view
 
     -- Called when the scene's view does not exist.
-    --
     -- INSERT code here to initialize the scene
     -- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
 
@@ -64,15 +65,15 @@ function scene:create( event )
     -- create a widget button (which will loads level1.lua on release)
 
 
-    local scoreDisplay = display.newText('52', 100, 200, native.systemFont, 16)
+    local scoreDisplay = display.newText( event.params.score, 100, 200, native.systemFont, 16)
     scoreDisplay.x = display.contentWidth*0.5
-    scoreDisplay.y = display.contentHeight - 200
+    scoreDisplay.y = display.contentHeight - 300
 
 
 
-    local gameName = display.newText('Light Jump', 100, 200, native.systemFont, 16)
+    local gameName = display.newText(event.params.gameName , 100, 200, native.systemFont, 16)
     gameName.x = display.contentWidth*0.5
-    gameName.y = display.contentHeight - 200
+    gameName.y = display.contentHeight - 250
 
 
 
@@ -108,6 +109,7 @@ function scene:create( event )
     sceneGroup:insert( level4 )
     sceneGroup:insert( menu )
 
+
 end
 
 
@@ -119,7 +121,7 @@ function scene:show( event )
         -- Called when the scene is still off screen and is about to move on screen
     elseif phase == "did" then
 
-        print('Bah alors t ou ?')
+
         -- Called when the scene is now on screen
         --
         -- INSERT code here to make the scene come alive
@@ -131,6 +133,7 @@ function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 
+
     if event.phase == "will" then
         -- Called when the scene is on screen and is about to move off screen
         --
@@ -138,6 +141,8 @@ function scene:hide( event )
         -- e.g. stop timers, stop animation, unload sounds, etc.)
     elseif phase == "did" then
         -- Called when the scene is now off screen
+
+
     end
 end
 

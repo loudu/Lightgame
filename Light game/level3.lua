@@ -19,11 +19,6 @@ motionx = 0;
 speed =2;
 
 
-
-
-
-
-
 local background=display.newImage("level3/background.png")
 
 score=0 
@@ -36,8 +31,8 @@ scoreText = display.newText(score,halfW,10)
 
 
 
-local stickman=display.newImage("level3/stickman.png")
-physics.addBody(stickman,"static",{ friction=1, bounce=1})
+local stickman = display.newImage("level3/stickman.png")
+physics.addBody( stickman , "static", { friction=0.5, bounce=0.3})
 stickman.y = display.contentHeight-260
 stickman:scale(1,1)
 

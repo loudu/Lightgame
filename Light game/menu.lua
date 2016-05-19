@@ -52,6 +52,8 @@ end
 local function onlevel4Release()
 	
 	-- go to level4.lua scene
+	composer.removeScene("level4")
+	composer.loadScene("level4")
 	composer.gotoScene( "level4", "fade", 500 )
 	
 	return true	-- indicates successful touch
