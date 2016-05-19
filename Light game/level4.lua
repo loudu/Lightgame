@@ -20,7 +20,6 @@ local menu
 local result4
 
 
-local diskGfx = { "puck_yellow.png", "puck_green.png", "puck_red.png" }
 local sky = display.newImage( "img/level4/bkg_clouds.png", 160, 195 )
 
 -- Wall --
@@ -34,21 +33,45 @@ local ground = display.newImage( "img/level4/ground.png", 160, 445 )
 physics.addBody( ground, "static", { friction=0.5, bounce=0 } )
 
 
-local crate = display.newImage( "img/level4/crate.png", 180, -50 )
+local crate = display.newImage( "img/level4/puck_yellow.png", 180, -50 )
 crate.rotation = 5
 
 physics.addBody( crate, "dynamic" )
 
 count = 0
 
-function spawnCrate()
+function spawnCrate(e)
 
-		local crate = display.newImage( "img/level4/crate.png", 180, -50 )
+	if e == 30 then
+
+		local crate = display.newImage( "img/level4/puck_green.png", 180, -50 )
 		crate.rotation = 5
 
 		physics.addBody( crate, "dynamic" )
 
 		crate:addEventListener( "touch", bounceUp) -- click event available
+
+	elseif e == 90 then
+
+		local crate = display.newImage( "img/level4/puck_red.png", 180, -50 )
+		crate.rotation = 5
+
+		physics.addBody( crate, "dynamic" )
+
+		crate:addEventListener( "touch", bounceUp) -- click event available
+
+	elseif e == 150 then
+
+		local crate = display.newImage( "img/level4/puck_blue.png", 180, -50 )
+		crate.rotation = 5
+
+		physics.addBody( crate, "dynamic" )
+
+		crate:addEventListener( "touch", bounceUp) -- click event available
+
+	end
+
+
 
 	return true
 end
@@ -56,14 +79,15 @@ end
 function checkForAdd(count)
 	if count == 30 then
 
-		spawnCrate()
+		spawnCrate(count)
 
 	elseif count == 90 then
 
-		spawnCrate()
-	elseif count == 120 then
+		spawnCrate(count)
 
-		spawnCrate()
+	elseif count == 150 then
+
+		spawnCrate(count)
 	end
 end
 
