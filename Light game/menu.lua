@@ -13,16 +13,48 @@ local widget = require "widget"
 --------------------------------------------
 
 -- forward declarations and other locals
-local playBtn
+local level1
+local level2
+local level3
+local level4
 
--- 'onRelease' event listener for playBtn
-local function onPlayBtnRelease()
+
+-- 'onRelease' event listener for level1
+local function onlevel1Release()
 	
 	-- go to level1.lua scene
 	composer.gotoScene( "level1", "fade", 500 )
 	
 	return true	-- indicates successful touch
 end
+
+-- 'onRelease' event listener for level2
+local function onlevel2Release()
+	
+	-- go to level1.lua scene
+	composer.gotoScene( "level2", "fade", 500 )
+	
+	return true	-- indicates successful touch
+end
+
+-- 'onRelease' event listener for level3
+local function onlevel3Release()
+	
+	-- go to level1.lua scene
+	composer.gotoScene( "level3", "fade", 500 )
+	
+	return true	-- indicates successful touch
+end
+
+-- 'onRelease' event listener for level14
+local function onlevel4Release()
+	
+	-- go to level1.lua scene
+	composer.gotoScene( "level4", "fade", 500 )
+	
+	return true	-- indicates successful touch
+end
+
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -44,21 +76,61 @@ function scene:create( event )
 	titleLogo.y = 75
 	
 	-- create a widget button (which will loads level1.lua on release)
-	playBtn = widget.newButton{
-		label="Play Now",
+	level1 = widget.newButton{
+		label="Spotlight",
 		labelColor = { default={255}, over={128} },
 		default="img/home/button.png",
 		over="img/home/button-over.png",
 		width=154, height=40,
-		onRelease = onPlayBtnRelease	-- event listener function
+		onRelease = onlevel1Release	-- event listener function
 	}
-	playBtn.x = display.contentWidth*0.5
-	playBtn.y = display.contentHeight - 125
+	level1.x = display.contentWidth*0.5
+	level1.y = display.contentHeight - 300
+	
+	-- create a widget button (which will loads level1.lua on release)
+	level2 = widget.newButton{
+		label="Escape Light",
+		labelColor = { default={255}, over={128} },
+		default="img/home/button.png",
+		over="img/home/button-over.png",
+		width=154, height=40,
+		onRelease = onlevel2Release	-- event listener function
+	}
+	level2.x = display.contentWidth*0.5
+	level2.y = display.contentHeight - 250	
+	
+	-- create a widget button (which will loads level1.lua on release)
+	level3 = widget.newButton{
+		label="Light Dodge",
+		labelColor = { default={255}, over={128} },
+		default="img/home/button.png",
+		over="img/home/button-over.png",
+		width=154, height=40,
+		onRelease = onlevel3Release	-- event listener function
+	}
+	level3.x = display.contentWidth*0.5
+	level3.y = display.contentHeight - 200	
+	
+	-- create a widget button (which will loads level1.lua on release)
+	level4 = widget.newButton{
+		label="Light Jump",
+		labelColor = { default={255}, over={128} },
+		default="img/home/button.png",
+		over="img/home/button-over.png",
+		width=154, height=40,
+		onRelease = onlevel4Release	-- event listener function
+	}
+	level4.x = display.contentWidth*0.5
+	level4.y = display.contentHeight - 150		
 	
 	-- all display objects must be inserted into group
 	sceneGroup:insert( background )
 	sceneGroup:insert( titleLogo )
-	sceneGroup:insert( playBtn )
+	sceneGroup:insert( level1 )
+	sceneGroup:insert( level2 )
+	sceneGroup:insert( level3 )
+	sceneGroup:insert( level4 )
+	
 end
 
 function scene:show( event )
