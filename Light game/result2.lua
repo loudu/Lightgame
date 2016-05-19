@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------
 --
--- result4.lua
+-- result2.lua
 --
 -----------------------------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ end
 local function onReplayRelease()
 
     -- go to level4.lua scene
-    composer.gotoScene( "level4", "fade", 500 )
+    composer.gotoScene( "level2", "fade", 500 )
 
     return true	-- indicates successful touch
 end
@@ -66,13 +66,13 @@ local sceneGroup = self.view
 
     local scoreDisplay = display.newText('52', 100, 200, native.systemFont, 16)
     scoreDisplay.x = display.contentWidth*0.5
-    scoreDisplay.y = display.contentHeight - 200
+    scoreDisplay.y = display.contentHeight - 250
 
 
 
-    local gameName = display.newText('Light Jump', 100, 200, native.systemFont, 16)
+    local gameName = display.newText('Escape Light', 100, 200, native.systemFont, 16)
     gameName.x = display.contentWidth*0.5
-    gameName.y = display.contentHeight - 200
+    gameName.y = display.contentHeight - 300
 
 
 
@@ -118,8 +118,6 @@ function scene:show( event )
     if phase == "will" then
         -- Called when the scene is still off screen and is about to move on screen
     elseif phase == "did" then
-
-        print('Bah alors t ou ?')
         -- Called when the scene is now on screen
         --
         -- INSERT code here to make the scene come alive
