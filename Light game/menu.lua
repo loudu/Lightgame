@@ -17,6 +17,7 @@ local level1
 local level2
 local level3
 local level4
+local result4
 
 
 -- 'onRelease' event listener for level1
@@ -31,7 +32,7 @@ end
 -- 'onRelease' event listener for level2
 local function onlevel2Release()
 	
-	-- go to level1.lua scene
+	-- go to level2.lua scene
 	composer.gotoScene( "level2", "fade", 500 )
 	
 	return true	-- indicates successful touch
@@ -40,7 +41,7 @@ end
 -- 'onRelease' event listener for level3
 local function onlevel3Release()
 	
-	-- go to level1.lua scene
+	-- go to level3.lua scene
 	composer.gotoScene( "level3", "fade", 500 )
 	
 	return true	-- indicates successful touch
@@ -49,7 +50,7 @@ end
 -- 'onRelease' event listener for level14
 local function onlevel4Release()
 	
-	-- go to level1.lua scene
+	-- go to level4.lua scene
 	composer.gotoScene( "level4", "fade", 500 )
 	
 	return true	-- indicates successful touch
