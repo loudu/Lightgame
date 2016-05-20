@@ -44,30 +44,30 @@ function spawnCrate(e)
 
 	if e == 30 then
 
-		local crate = display.newImage( "img/level4/puck_green.png", 180, -50 )
-		crate.rotation = 5
+		crateb = display.newImage( "img/level4/puck_green.png", 180, -50 )
+		crateb.rotation = 5
 
-		physics.addBody( crate, "dynamic" )
+		physics.addBody( crateb, "dynamic" )
 
-		crate:addEventListener( "touch", bounceUp) -- click event available
+		crateb:addEventListener( "touch", bounceUp) -- click event available
 
 	elseif e == 90 then
 
-		local crate = display.newImage( "img/level4/puck_red.png", 180, -50 )
-		crate.rotation = 5
+		cratec = display.newImage( "img/level4/puck_red.png", 180, -50 )
+		cratec.rotation = 5
 
-		physics.addBody( crate, "dynamic" )
+		physics.addBody( cratec, "dynamic" )
 
-		crate:addEventListener( "touch", bounceUp) -- click event available
+		cratec:addEventListener( "touch", bounceUp) -- click event available
 
 	elseif e == 150 then
 
-		local crate = display.newImage( "img/level4/puck_blue.png", 180, -50 )
-		crate.rotation = 5
+		crated = display.newImage( "img/level4/puck_blue.png", 180, -50 )
+		crated.rotation = 5
 
-		physics.addBody( crate, "dynamic" )
+		physics.addBody( crated, "dynamic" )
 
-		crate:addEventListener( "touch", bounceUp) -- click event available
+		crated:addEventListener( "touch", bounceUp) -- click event available
 
 	end
 
@@ -101,7 +101,7 @@ function bounceUp( event )
 	count =  count + 1;
 
 	checkForAdd(count)
-
+	
 	return true
 end
 
@@ -109,6 +109,9 @@ local function gameOver()
 
 	sky:removeSelf()
 	crate:removeSelf()
+	display.remove( crateb )
+	display.remove( cratec )
+	display.remove( crated )
 	ground:removeSelf()
 
 	local options = {
