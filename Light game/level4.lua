@@ -22,6 +22,10 @@ local result4
 
 local sky = display.newImage( "img/level4/bkg_clouds.png", 160, 195 )
 
+-- Top --
+local top = display.newImage( "img/level4/ground.png", 160, -250 )
+physics.addBody( top, "static", { friction=0.5, bounce=0 } )
+
 -- Wall --
 local leftWall = display.newRect(0, display.contentHeight/2, 1, display.contentHeight * 99)
 physics.addBody( leftWall, "static", { friction=0.5, bounce=0.3 } )
@@ -49,7 +53,7 @@ function spawnCrate(e)
 
 		physics.addBody( crateb, "dynamic" )
 
-		crateb:addEventListener( "touch", bounceUp) -- click event available
+		crateb:addEventListener( "tap", bounceUp) -- click event available
 
 	elseif e == 90 then
 
@@ -58,7 +62,7 @@ function spawnCrate(e)
 
 		physics.addBody( cratec, "dynamic" )
 
-		cratec:addEventListener( "touch", bounceUp) -- click event available
+		cratec:addEventListener( "tap", bounceUp) -- click event available
 
 	elseif e == 150 then
 
@@ -67,7 +71,7 @@ function spawnCrate(e)
 
 		physics.addBody( crated, "dynamic" )
 
-		crated:addEventListener( "touch", bounceUp) -- click event available
+		crated:addEventListener( "tap", bounceUp) -- click event available
 
 	end
 
@@ -94,14 +98,15 @@ end
 function bounceUp( event )
 	local t = event.target
 
-	local lateral = 5 - math.random(0,10)
+	local lateral = 10 - math.random(0,20)
+	local horizontal = -math.random(15,25)
 
-	t:applyForce( lateral, -6, t.x, t.y )
+	t:applyForce( lateral, horizontal, t.x, t.y )
 
 	count =  count + 1;
 
 	checkForAdd(count)
-	
+
 	return true
 end
 
@@ -150,7 +155,7 @@ end
 ground.collision = onLocalCollision
 ground:addEventListener( "collision" )
 
-crate:addEventListener( "touch", bounceUp)
+crate:addEventListener( "tap", bounceUp)
 
 
 function scene:show( event )
