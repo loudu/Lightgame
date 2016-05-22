@@ -6,8 +6,11 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 
-display.setDefault( "background", 1, 1, 1 )
+display.setDefault( "background", 0, 0, 0 )
 
+
+local physics = require("physics")
+physics.start()
 
 -- needed var
 local halfX = display.contentWidth *0.5
@@ -16,128 +19,189 @@ local halfY = display.contentHeight *0.5
 local xMax = display.contentWidth
 local yMax = display.contentHeight
 
-local objectClear = false
-
-local score = 0
-local scoreNumber = display.newText(score, halfX, 30, native.systemFont, 50)
-scoreNumber:setFillColor( 1, 0, 0 )
+local object =0
+count = 0
 
 
 
+	local scoreNumber = display.newText(count, halfX, 30, native.systemFont, 50)
+	scoreNumber:setFillColor( 1, 1, 1 )
 
-
--- create objects
-local myObject = display.newRect( 0, 0, 100, 100)
-myObject.x = halfX
-myObject.y = halfY
-myObject:setFillColor( 0 )
 
 	-- win zone objects
-	local myCircle = display.newImage( "img/level1/circle_black.png" )
-	local myTriangle = display.newImage("img/level1/triangle_black.png")
-	local mySquare = display.newImage("img/level1/square_black.png")
-	local myCross = display.newImage("img/level1/cross_black.png")
-	-- position the win zone objects
-	mySquare:translate( 50, 30 )
-	myTriangle:translate(xMax - 50, 30)
-	myCircle:translate( 50, yMax - 30)
-	myCross:translate(xMax - 50, yMax - 30)
-    --scale
-    myCross:scale(0.2 , 0.2)
-    myTriangle:scale(0.2 , 0.2)
-    mySquare:scale(0.2 , 0.2)
-    myCircle:scale(0.2 , 0.2)
+	myCircle = display.newCircle( 200, 200, 50 )
+	myCircle:setFillColor( 0.2,0.3,0.7)
+	myCircle.x = (display.contentWidth) * 0
+	myCircle.y = (display.contentHeight) * 0
+	myCircle.name = "blue"
+
+
+	myTriangle = display.newCircle( 200, 200, 50)
+	myTriangle:setFillColor( 0.5, 0.1,0.2 )
+	myTriangle.x = (display.contentWidth) * 1
+	myTriangle.y = (display.contentHeight) * 0
+	myTriangle.name = "red"
+
+
+	mySquare = display.newCircle( 200, 200, 50 )
+	mySquare:setFillColor( 0.8, 0.1,0.7 )
+	mySquare.x = (display.contentWidth) * 0
+	mySquare.y = (display.contentHeight) * 1
+	mySquare.name = "green"
+
+
+	myCross = display.newCircle( 200, 200, 50 )
+	myCross:setFillColor( 0.2, 0.9,0.5 )
+	myCross.x = (display.contentWidth) * 1
+	myCross.y = (display.contentHeight) * 1
+	myCross.name = "pink"
 
 
 
--- create win zone
--- Coord to use for win condition
---[[
-local myZoneTopLeft = display.newRect(50, 0, 100, 100)
-myZoneTopLeft:setFillColor( 255 )
+-- FUNCTION DRAG & DROP
+local function startDrag( event )
+	local t = event.target
 
-local myZoneTopRight = display.newRect(xMax - 50, 0, 100, 100)
-myZoneTopRight:setFillColor( 255 )
+	local phase = event.phase
+	if "began" == phase then
+		display.getCurrentStage():setFocus( t )
+		t.isFocus = true
 
-local myZoneBtmLeft = display.newRect(50, yMax , 100, 100)
-myZoneBtmLeft:setFillColor( 255 )
+		-- Store initial position
+		t.x0 = event.x - t.x
+		t.y0 = event.y - t.y
+		
+		-- Make body type temporarily "kinematic" (to avoid gravitional forces)
+		event.target.bodyType = "kinematic"
+		
+		-- Stop current motion, if any
+		--event.target:setLinearVelocity( 0, 0 )
+		--event.target.angularVelocity = 0
 
-local myZoneBtmRight = display.newRect(xMax - 50, yMax , 100, 100)
-myZoneBtmRight:setFillColor( 255 )
-]]--
-
---[[ Timer test 
-display.setStatusBar(display.HiddenStatusBar) _W = display.contentWidth _H = display.contentHeight number = 0
- 
-local txt_counter = display.newText( number, 0, 0, native.systemFont, 50 )
-txt_counter.x = _W/2
-txt_counter.y = _H/2
-txt_counter:setTextColor( 255, 255, 255 )
-function fn_counter()
-number = number + 1
-txt_counter.text = number
-end
-timer.performWithDelay(1000, fn_counter, 0)
-]]--
---End timer test
-
-local function updateScore()
-score = score + 10
-scoreNumber.text = score
-objectClear = true
-end
-
-
--- touch listener function
-function myObject:touch( event )
-    if event.phase == "began" then
-	
-        self.markX = self.x    -- store x location of object
-        self.markY = self.y    -- store y location of object
-	
-    elseif event.phase == "moved" then
-	
-        local x = (event.x - event.xStart) + self.markX
-        local y = (event.y - event.yStart) + self.markY
-        myObject:setFillColor( 255, 0, 255 )
-        
-        self.x, self.y = x, y    -- move object based on calculations above
-
-
-        -- game logique here ? 
-        if self.x < 50 and self.y < 50 then
-            myObject:removeSelf()
-            updateScore()
-
-            -- if The player have destructed the object we create a new one in ended section
-
-        elseif objectClear == true then
-            -- recreation of deleted object
-            local myObject = display.newRect( 0, 0, 100, 100)
-            myObject.x = halfX
-            myObject.y = halfY
-            myObject:setFillColor( 0 )
-
-
-        end
-
-
-        
-
-
-
-
-    elseif event.phase == "ended" then
-    	myObject:setFillColor( 0 )
-    	self.x = halfX
-    	self.y = halfY
-
-    end
-    
-    return true
+	elseif t.isFocus then
+		if "moved" == phase then
+			t.x = event.x - t.x0
+			t.y = event.y - t.y0
+				
+		elseif "ended" == phase or "cancelled" == phase then
+			display.getCurrentStage():setFocus( nil )
+			t.isFocus = false
+			print(t.x, t.y)
+			
+			if ( (t.x < 30 and t.y < 30) or (t.x > 300 and t.y < 30) or (t.x < 30 and t.y > 450) or (t.x > 300 and t.y > 450)  ) then 
+				verificationCouleur()
+			end
+		end
+	end
+	-- Stop further propagation of touch event!
+	return true
 end
 
--- make 'myObject' listen for touch events
-myObject:addEventListener( "touch", myObject )
+
+
+
+function newforme()	
+	rand = math.random( 100 )
+	object = object + 1
+	print(object)
+	
+if (object == 5) then 
+	gameOver()
+end
+	
+	if (rand < 25) then
+		myObject = display.newCircle( 200, 200, 50 )
+		myObject:setFillColor( 0.2,0.3,0.7)
+		myObject.x = halfX + math.random(50)
+		myObject.y = halfY + math.random(50)
+		myObject.name = "blue"
+		
+	elseif (rand > 25 and rand < 50) then
+		myObject = display.newCircle( 200, 200, 50)
+		myObject:setFillColor( 0.5, 0.1,0.2 )
+		myObject.x = halfX + math.random(50)
+		myObject.y = halfY + math.random(50)
+		myObject.name = "red"
+		
+	elseif (rand > 50 and rand < 75) then
+		myObject = display.newCircle( 200, 200, 50 )
+		myObject:setFillColor( 0.8, 0.1,0.7 )
+		myObject.x = halfX + math.random(50)
+		myObject.y = halfY + math.random(50)		
+		myObject.name = "green"
+	
+	else
+		myObject = display.newCircle( 200, 200, 50 )
+		myObject:setFillColor( 0.2, 0.9,0.5  )		
+		myObject.x = halfX + math.random(50)
+		myObject.y = halfY + math.random(50)
+		myObject.name = "pink"
+		
+	end	
+	-- make 'myObject' listen for touch events
+	myObject:addEventListener( "touch", startDrag )
+	
+end
+
+newForme = timer.performWithDelay( 1000, newforme, 100 )
+
+function verificationCouleur () 
+		if (myObject.name == "blue" or myObject.name == "red" or myObject.name == "green" or myObject.name == "pink") then
+			myObject:removeSelf()
+		 	updateScore()
+		object = object - 1
+		else 
+			gameOver()
+		end
+end
+	
+function updateScore()
+	count = count + 10
+	scoreNumber.text = count
+end
+
+
+function gameOver() 
+	
+	timer.pause( newForme )
+	
+	local options = {
+		effect = "fade",
+		time = 300,
+		params = {
+			score = count,
+			gameName = "Escape Light"
+		}
+	}
+	count = 0
+	
+	--if event.phase == "will" then
+		composer.removeScene("level1", true)
+		myObject:removeSelf()
+	myObject:removeSelf()
+	myObject:removeSelf()
+	myObject:removeSelf()
+	myObject:removeSelf()
+		myCircle:removeSelf()
+		myTriangle:removeSelf()
+		myCross:removeSelf()
+		mySquare:removeSelf()
+		composer.loadScene( "result1", options )
+		composer.gotoScene( "result1", options )
+	--end
+	return true	-- indicates successful touch
+end
+
+function scene:destroy( event )
+	local sceneGroup = self.view
+	
+	-- Called prior to the removal of scene's "view" (sceneGroup)
+	-- 
+	-- INSERT code here to cleanup the scene
+	-- e.g. remove display objects, remove touch listeners, save state, etc.
+
+end
+
+
 
 return scene

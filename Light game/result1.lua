@@ -35,7 +35,7 @@ end
 local function onReplayRelease()
 
     -- go to level4.lua scene
-    composer.gotoScene( "level2", "fade", 500 )
+    composer.gotoScene( "level1", "fade", 500 )
 
     return true	-- indicates successful touch
 end
@@ -70,7 +70,7 @@ local sceneGroup = self.view
 
 
 
-    local gameName = display.newText('Escape Light', 100, 200, native.systemFont, 16)
+    local gameName = display.newText('SpotLight', 100, 200, native.systemFont, 16)
     gameName.x = display.contentWidth*0.5
     gameName.y = display.contentHeight - 300
 
