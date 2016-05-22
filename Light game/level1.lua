@@ -3,111 +3,141 @@
 -- level1.lua
 --
 -----------------------------------------------------------------------------------------
-
 local composer = require( "composer" )
 local scene = composer.newScene()
 
--- include Corona's "physics" library
-local physics = require "physics"
-physics.start(); physics.pause()
+display.setDefault( "background", 1, 1, 1 )
 
---------------------------------------------
 
--- forward declarations and other locals
-local screenW, screenH, halfW = display.contentWidth, display.contentHeight, display.contentWidth*0.5
+-- needed var
+local halfX = display.contentWidth *0.5
+local halfY = display.contentHeight *0.5
 
-function scene:create( event )
+local xMax = display.contentWidth
+local yMax = display.contentHeight
 
-	-- Called when the scene's view does not exist.
-	-- 
-	-- INSERT code here to initialize the scene
-	-- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
+local objectClear = false
 
-	local sceneGroup = self.view
+local score = 0
+local scoreNumber = display.newText(score, halfX, 30, native.systemFont, 50)
+scoreNumber:setFillColor( 1, 0, 0 )
 
-	-- create a grey rectangle as the backdrop
-	local background = display.newRect( 0, 0, screenW, screenH )
-	background.anchorX = 0
-	background.anchorY = 0
-	background:setFillColor( .5 )
-	
-	-- make a crate (off-screen), position it, and rotate slightly
-	local crate = display.newImageRect( "img/level1/crate.png", 90, 90 )
-	crate.x, crate.y = 160, -100
-	crate.rotation = 15
-	
-	-- add physics to the crate
-	physics.addBody( crate, { density=1.0, friction=0.3, bounce=0.3 } )
-	
-	-- create a grass object and add physics (with custom shape)
-	local grass = display.newImageRect( "img/level1/grass.png", screenW, 82 )
-	grass.anchorX = 0
-	grass.anchorY = 1
-	grass.x, grass.y = 0, display.contentHeight
-	
-	-- define a shape that's slightly shorter than image bounds (set draw mode to "hybrid" or "debug" to see)
-	local grassShape = { -halfW,-34, halfW,-34, halfW,34, -halfW,34 }
-	physics.addBody( grass, "static", { friction=0.3, shape=grassShape } )
-	
-	-- all display objects must be inserted into group
-	sceneGroup:insert( background )
-	sceneGroup:insert( grass)
-	sceneGroup:insert( crate )
+
+
+
+
+-- create objects
+local myObject = display.newRect( 0, 0, 100, 100)
+myObject.x = halfX
+myObject.y = halfY
+myObject:setFillColor( 0 )
+
+	-- win zone objects
+	local myCircle = display.newImage( "img/level1/circle_black.png" )
+	local myTriangle = display.newImage("img/level1/triangle_black.png")
+	local mySquare = display.newImage("img/level1/square_black.png")
+	local myCross = display.newImage("img/level1/cross_black.png")
+	-- position the win zone objects
+	mySquare:translate( 50, 30 )
+	myTriangle:translate(xMax - 50, 30)
+	myCircle:translate( 50, yMax - 30)
+	myCross:translate(xMax - 50, yMax - 30)
+    --scale
+    myCross:scale(0.2 , 0.2)
+    myTriangle:scale(0.2 , 0.2)
+    mySquare:scale(0.2 , 0.2)
+    myCircle:scale(0.2 , 0.2)
+
+
+
+-- create win zone
+-- Coord to use for win condition
+--[[
+local myZoneTopLeft = display.newRect(50, 0, 100, 100)
+myZoneTopLeft:setFillColor( 255 )
+
+local myZoneTopRight = display.newRect(xMax - 50, 0, 100, 100)
+myZoneTopRight:setFillColor( 255 )
+
+local myZoneBtmLeft = display.newRect(50, yMax , 100, 100)
+myZoneBtmLeft:setFillColor( 255 )
+
+local myZoneBtmRight = display.newRect(xMax - 50, yMax , 100, 100)
+myZoneBtmRight:setFillColor( 255 )
+]]--
+
+--[[ Timer test 
+display.setStatusBar(display.HiddenStatusBar) _W = display.contentWidth _H = display.contentHeight number = 0
+ 
+local txt_counter = display.newText( number, 0, 0, native.systemFont, 50 )
+txt_counter.x = _W/2
+txt_counter.y = _H/2
+txt_counter:setTextColor( 255, 255, 255 )
+function fn_counter()
+number = number + 1
+txt_counter.text = number
+end
+timer.performWithDelay(1000, fn_counter, 0)
+]]--
+--End timer test
+
+local function updateScore()
+score = score + 10
+scoreNumber.text = score
+objectClear = true
 end
 
 
-function scene:show( event )
-	local sceneGroup = self.view
-	local phase = event.phase
+-- touch listener function
+function myObject:touch( event )
+    if event.phase == "began" then
 	
-	if phase == "will" then
-		-- Called when the scene is still off screen and is about to move on screen
-	elseif phase == "did" then
-		-- Called when the scene is now on screen
-		-- 
-		-- INSERT code here to make the scene come alive
-		-- e.g. start timers, begin animation, play audio, etc.
-		physics.start()
-	end
+        self.markX = self.x    -- store x location of object
+        self.markY = self.y    -- store y location of object
+	
+    elseif event.phase == "moved" then
+	
+        local x = (event.x - event.xStart) + self.markX
+        local y = (event.y - event.yStart) + self.markY
+        myObject:setFillColor( 255, 0, 255 )
+        
+        self.x, self.y = x, y    -- move object based on calculations above
+
+
+        -- game logique here ? 
+        if self.x < 50 and self.y < 50 then
+            myObject:removeSelf()
+            updateScore()
+
+            -- if The player have destructed the object we create a new one in ended section
+
+        elseif objectClear == true then
+            -- recreation of deleted object
+            local myObject = display.newRect( 0, 0, 100, 100)
+            myObject.x = halfX
+            myObject.y = halfY
+            myObject:setFillColor( 0 )
+
+
+        end
+
+
+        
+
+
+
+
+    elseif event.phase == "ended" then
+    	myObject:setFillColor( 0 )
+    	self.x = halfX
+    	self.y = halfY
+
+    end
+    
+    return true
 end
 
-function scene:hide( event )
-	local sceneGroup = self.view
-	
-	local phase = event.phase
-	
-	if event.phase == "will" then
-		-- Called when the scene is on screen and is about to move off screen
-		--
-		-- INSERT code here to pause the scene
-		-- e.g. stop timers, stop animation, unload sounds, etc.)
-		physics.stop()
-	elseif phase == "did" then
-		-- Called when the scene is now off screen
-	end	
-	
-end
-
-function scene:destroy( event )
-
-	-- Called prior to the removal of scene's "view" (sceneGroup)
-	-- 
-	-- INSERT code here to cleanup the scene
-	-- e.g. remove display objects, remove touch listeners, save state, etc.
-	local sceneGroup = self.view
-	
-	package.loaded[physics] = nil
-	physics = nil
-end
-
----------------------------------------------------------------------------------
-
--- Listener setup
-scene:addEventListener( "create", scene )
-scene:addEventListener( "show", scene )
-scene:addEventListener( "hide", scene )
-scene:addEventListener( "destroy", scene )
-
------------------------------------------------------------------------------------------
+-- make 'myObject' listen for touch events
+myObject:addEventListener( "touch", myObject )
 
 return scene

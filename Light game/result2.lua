@@ -64,7 +64,7 @@ local sceneGroup = self.view
     -- create a widget button (which will loads level1.lua on release)
 
 
-    local scoreDisplay = display.newText('52', 100, 200, native.systemFont, 16)
+    local scoreDisplay = display.newText(event.params.score, 100, 200, native.systemFont, 16)
     scoreDisplay.x = display.contentWidth*0.5
     scoreDisplay.y = display.contentHeight - 250
 

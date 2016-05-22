@@ -5,6 +5,10 @@
 -----------------------------------------------------------------------------------------
 
 display.setStatusBar(display.HiddenStatusBar)
+
+local composer = require( "composer" )
+local scene = composer.newScene()
+
 local physics= require("physics")
 physics.start()
 physics.setDrawMode("normale")
@@ -19,7 +23,7 @@ motionx = 0;
 speed =2;
 
 
-local background=display.newImage("level3/background.png")
+local background=display.newImage("img/level3/background.png")
 
 score=0 
 scoreText = display.newText(score,halfW,10)
@@ -31,7 +35,7 @@ scoreText = display.newText(score,halfW,10)
 
 
 
-local stickman = display.newImage("level3/stickman.png")
+local stickman = display.newImage("img/level3/stickman.png")
 physics.addBody( stickman , "static", { friction=0.5, bounce=0.3})
 stickman.y = display.contentHeight-260
 stickman:scale(1,1)
@@ -45,16 +49,16 @@ physics.addBody( rightWall, "static", { friction=0.5, bounce=0.3 } )
 
 
 
-local floor = display.newImage("level3/plateforme.png",true)
+local floor = display.newImage("img/level3/plateforme.png",true)
 floor.y = display.contentHeight - 600
 physics.addBody(floor,"static")
 
 
-local left = display.newImage ("level3/fleche2.png")
+local left = display.newImage ("img/level3/fleche2.png")
  left.x = 130; left.y = 550;
  left.rotation = 180;
 -- Add right joystick button
- local right = display.newImage ("level3/fleche2.png")
+ local right = display.newImage ("img/level3/fleche2.png")
  right.x = 200; right.y = 390;
 
 -- When left arrow is touched, move character left
@@ -146,3 +150,5 @@ local function spawnController( start, spawnParams )
         timer.resume( spawnTimer )
     end
 end
+
+return scene
