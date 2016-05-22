@@ -23,7 +23,7 @@ local result4
 local sky = display.newImage( "img/level4/bkg_clouds.png", 160, 195 )
 
 -- Top --
-local top = display.newImage( "img/level4/ground.png", 160, -250 )
+local top = display.newImage( "img/level4/ground.png", 160, -170 )
 physics.addBody( top, "static", { friction=0.5, bounce=0 } )
 
 -- Wall --
@@ -53,7 +53,7 @@ function spawnCrate(e)
 
 		physics.addBody( crateb, "dynamic" )
 
-		crateb:addEventListener( "tap", bounceUp) -- click event available
+		crateb:addEventListener( "touch", bounceUp) -- click event available
 
 	elseif e == 90 then
 
@@ -62,7 +62,7 @@ function spawnCrate(e)
 
 		physics.addBody( cratec, "dynamic" )
 
-		cratec:addEventListener( "tap", bounceUp) -- click event available
+		cratec:addEventListener( "touch", bounceUp) -- click event available
 
 	elseif e == 150 then
 
@@ -71,7 +71,7 @@ function spawnCrate(e)
 
 		physics.addBody( crated, "dynamic" )
 
-		crated:addEventListener( "tap", bounceUp) -- click event available
+		crated:addEventListener( "touch", bounceUp) -- click event available
 
 	end
 
@@ -98,8 +98,8 @@ end
 function bounceUp( event )
 	local t = event.target
 
-	local lateral = 10 - math.random(0,20)
-	local horizontal = -math.random(15,25)
+	local lateral = 5 - math.random(0,10)
+	local horizontal = -math.random(3,6)
 
 	t:applyForce( lateral, horizontal, t.x, t.y )
 
@@ -155,7 +155,7 @@ end
 ground.collision = onLocalCollision
 ground:addEventListener( "collision" )
 
-crate:addEventListener( "tap", bounceUp)
+crate:addEventListener( "touch", bounceUp)
 
 
 function scene:show( event )
